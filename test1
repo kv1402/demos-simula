@@ -38,7 +38,7 @@ begin
             end;
 
 
-        Entity class Network(queue,serve, Ptot);
+        Entity class Network;
         begin
                 ref(Packet) packet;
                 integer Po;
