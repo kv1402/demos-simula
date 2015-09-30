@@ -12,6 +12,7 @@ begin
             begin
                 ref(Bin) buffer;
                 integer Pi;
+                real SessionStart;
                 buffer :- new Bin("buffer", 0);
                 Pi := 1;
                 
@@ -30,6 +31,7 @@ begin
 
          Entity class Packet(buffer);
             ref(Bin) buffer;
+            real timestamp;
             begin
                 timestamp:= time;
                 queue.wait;
