@@ -4,7 +4,7 @@ begin
 	begin
         
         ref(WAITQ) queue;
-        ref(Tally) Delay, sessionLength;
+        ref(Tally) delay_, sessionLength;
         ref(RDist) Send, serve;
         integer Ptot;
         
@@ -33,7 +33,7 @@ begin
             begin
                 timestamp:= time;
                 queue.wait;
-                Delay.update(time-timestamp);
+                delay_.update(time-timestamp);
                 buffer.give(1);
             end;
 
@@ -54,7 +54,7 @@ begin
         
         setseed(33427485);
 
-        Delay:= new Tally("Total time in queue");
+        delay_:= new Tally("Total time in queue");
         sessionLength:- new Tally("Total session length");
         Send:-new NegExp("Sending intensity", 0.1);
         Serve:- new NegExp("Serving intensity", 1);
@@ -68,7 +68,7 @@ begin
         begin
 
 
-            Delay.reset;
+            delay_.reset;
 
 
             User1:- new User("User1", Ptot, Send, buffer);
