@@ -69,15 +69,6 @@ begin
 
 
 
-        numreplica:=20;
-
-        WHILE replication LE numreplica DO
-        begin
-
-
-            delay_.reset;
-
-
             User1:- new User("User1");
             User2:- new User("User2");
             User3:- new User("User3");    
@@ -88,12 +79,7 @@ begin
             User2.schedule(0);
             User3.schedule(0);
 
-            if numreplica > 2 then noreport;
 
-            replicate;
-        end;
-
-        if numreplica < 3 then norepli;
 
     end;
 end;
