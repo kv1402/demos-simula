@@ -5,14 +5,17 @@
         ref(Rdist) Send, serve;
         int Ptot;
         
-        Entity class User(Ptot, Send, buffer);
+        Entity class User;
             begin
+                ref(Bin) buffer;
                 integer Pi;
+                buffer :- new Bin("buffer", 0);
                 Pi := 1;
+                
                 SessionStart:= time;
                 A:
                         if Pi < Ptot then begin
-                                new Packet(edit("packet",Pi)).schedule(now);
+                                new Packet(edit("packet",Pi), buffer).schedule(now);
                                 hold(Send.sample); 
                                 Goto A;
                         end;
@@ -22,24 +25,25 @@
                  end;
 
 
-         Entity class Packet();
+         Entity class Packet(buffer);
+            ref(Bin) buffer;
             begin
-                ref(BIN) buffer;
                 timestamp:= time;
-                queue.wait
+                queue.wait;
                 
-                delay.update(time-timestamp)
+                delay.update(time-timestamp);
                 buffer.give(1);
             end;
 
 
         Entity class Network(queue,serve, Ptot);
         begin
-                int Po:= 1;
                 ref(Packet) packet;
+                int Po:= 1;
                 while Po < Ptot do 
                 packet:= queue.coopt;
                 hold(serve.sample);
+                packet.schedule(0);
                 
         end;
         
@@ -51,9 +55,9 @@
         Serve:- new NegExp("Serving intensity", 1);
 
 
-        delay:- new Tally("Totalt time in queue");
+        delay:- new Tally("Total time in queue");
         sessionLength:- new Tally("Total session length");
-
+        queue := new waitQ("Queue");
 
 
 
@@ -97,11 +101,9 @@
         if numreplica < 3 then norepli;
 
 
-        avgPPdelay:= totalDelay/Ptot/3;
-        avgSession:= sessionLenght/3;
 
-        OutText("Average sessionLenth");outReal(avgSession,10);OutImage;
-        OutText("Average delay per packet");outReal(avgPPdelay, 4, 10);OutImage;
+        ! OutText("Average sessionLenth");outReal(avgSession,10);OutImage;
+        ! OutText("Average delay per packet");outReal(avgPPdelay, 4, 10);OutImage;
     end;
 end;
 
