@@ -81,7 +81,7 @@ begin
             User2.schedule(0);
             User3.schedule(0);
 
-	sessTerm.take(3);
+	    SessTerm.take(3);
 
     end;
 end;
