@@ -17,11 +17,12 @@ begin
                 integer Pi;
                 real SessionStart;
                 buffer :- new Bin("buffer", 0);
-                Pi := 1;
+                Pi := 0;
                 
                 SessionStart:= time;
                 A:
                         if Pi < Ptot then begin
+                        	Pi:=Pi+1;
                                 new Packet(edit("packet",Pi), buffer).schedule(now);
                                 hold(Send.sample); 
                                 Goto A;
@@ -47,8 +48,9 @@ begin
         begin
                 ref(Packet) packet_;
                 integer Po;
-                Po:= 1;
+                Po:= 0;
                 while Po < Ptot do 
+                Po:=Po+1;
                 packet_:- queue.coopt;
                 hold(serve.sample);
                 packet_.schedule(0);
@@ -85,10 +87,6 @@ begin
             User1.schedule(0);
             User2.schedule(0);
             User3.schedule(0);
-	            
- 
-
-            Hold(60*60*24);
 
             if numreplica > 2 then noreport;
 
