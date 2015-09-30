@@ -7,6 +7,7 @@ begin
         ref(Tally) delay_, sessionLength;
         ref(RDist) Send, serve;
         integer Ptot;
+        real numreplica;
         
         Entity class User;
             begin
