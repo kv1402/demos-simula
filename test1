@@ -6,6 +6,8 @@ begin
         ref(WAITQ) queue;
         ref(Tally) delay_, sessionLength;
         ref(RDist) Send, serve;
+        ref(User) User1, User2, User3;
+        ref(Network) network;
         integer Ptot;
         real numreplica;
         
@@ -87,7 +89,7 @@ begin
             
     
 
-            New Server("Server").schedule(0);
+            New network("Network").schedule(0);
 
             Hold(60*60*24);
 
