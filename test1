@@ -68,6 +68,7 @@ begin
         Send:-new NegExp("Sending intensity", 50);
         Serve:- new NegExp("Serving intensity", 260);
         queue :- new waitQ("Queue");
+        SessTerm :- new Bin("Termin", 0);
 
 
 
