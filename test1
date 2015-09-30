@@ -96,7 +96,9 @@ begin
         end;
 
         if numreplica < 3 then norepli;
-
+	
+	outText("SessionLength");outReal(sessionLength);outImage""; 
+	outText("delayPP");outReal(delay_);outImage""; 
     end;
 end;
 
