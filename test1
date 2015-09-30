@@ -31,9 +31,9 @@ begin
 
 
          Entity class Packet(buffer);
-            ref(Bin) buffer;
-            Real timestamp;
-            begin
+              begin
+              	ref(Bin) buffer;
+              	Real timestamp;
                 timestamp:= time;
                 queue.wait;
                 delay_.update(time-timestamp);
