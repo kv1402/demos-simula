@@ -4,7 +4,7 @@ begin
 	begin
         
         ref(WAITQ) queue;
-        ref(Tally) delay, sessionLength;
+        ref(Tally) Delay, sessionLength;
         ref(RDist) Send, serve;
         integer Ptot;
         
@@ -33,7 +33,7 @@ begin
             begin
                 timestamp:= time;
                 queue.wait;
-                delay.update(time-timestamp);
+                Delay.update(time-timestamp);
                 buffer.give(1);
             end;
 
@@ -55,7 +55,7 @@ begin
 
         Send:-new NegExp("Sending intensity", 0.1);
         Serve:- new NegExp("Serving intensity", 1);
-        delay:= new Tally("Total time in queue");
+        Delay:= new Tally("Total time in queue");
         sessionLength:- new Tally("Total session length");
         queue := new waitQ("Queue");
 
@@ -67,7 +67,7 @@ begin
         begin
 
 
-            delay.reset;
+            Delay.reset;
 
 
             User1:- new User("User1", Ptot, Send, buffer);
@@ -88,10 +88,6 @@ begin
 
             Hold(60*60*24);
 
-            totalUp:=totalUp+upTime.sum;
-            totalDown:=totalDown+downTime.sum;
-
-            Tilgjengelig.update(upTime.sum/(upTime.sum+downTime.sum));
 
             if numreplica > 2 then noreport;
 
