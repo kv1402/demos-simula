@@ -4,9 +4,9 @@ begin
 	begin
         
         ref(WAITQ) queue;
-        ref(Tally) delay,sessionLength;
+        ref(Tally) delay, sessionLength;
         ref(RDist) Send, serve;
-        int Ptot;
+        integer Ptot;
         
         Entity class User;
             begin
