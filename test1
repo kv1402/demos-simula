@@ -8,6 +8,7 @@ begin
         ref(RDist) Send, serve;
         ref(User) User1, User2, User3;
         ref(Network) network_;
+        ref(BIN) SessTerm;
         integer Ptot;
         real numreplica;
         
@@ -30,6 +31,7 @@ begin
                         
                 buffer.take(1000);
                 sessionLength.update(time-SessionStart);
+                SessTerm.give(1);
                  end;
 
 
@@ -79,7 +81,7 @@ begin
             User2.schedule(0);
             User3.schedule(0);
 
-
+	sessTerm.take(3);
 
     end;
 end;
