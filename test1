@@ -1,8 +1,8 @@
 
-        ! ref(BIN) FIFO;
-        ref(WaitQ) queue;
+        
+        ref(WAITQ) queue;
         ref(Tally) delay,sessionLength;
-        ref(Rdist) Send, serve;
+        ref(RDist) Send, serve;
         int Ptot;
         
         Entity class User;
@@ -30,7 +30,6 @@
             begin
                 timestamp:= time;
                 queue.wait;
-                
                 delay.update(time-timestamp);
                 buffer.give(1);
             end;
@@ -53,8 +52,6 @@
 
         Send:-new NegExp("Sending intensity", 0.1);
         Serve:- new NegExp("Serving intensity", 1);
-
-
         delay:- new Tally("Total time in queue");
         sessionLength:- new Tally("Total session length");
         queue := new waitQ("Queue");
@@ -100,10 +97,6 @@
 
         if numreplica < 3 then norepli;
 
-
-
-        ! OutText("Average sessionLenth");outReal(avgSession,10);OutImage;
-        ! OutText("Average delay per packet");outReal(avgPPdelay, 4, 10);OutImage;
     end;
 end;
 
