@@ -1,34 +1,39 @@
 
-        ref(BIN) FIFO;
-        ref(Count) Pi, Po;
+        ! ref(BIN) FIFO;
+        ref(WaitQ) queue;
+        ref(Tally) delay,sessionLength;
+        ref(Rdist) Send;
         int Ptot;
-        ref(Tally) Send, totalDelay;
-        Real SessionStart, QueueStart;
-
-        ref(Component) ;
         
-        Entity class User(Send);
+        Entity class User(Ptot, Send, buffer);
             begin
+                integer Pi;
+                Pi := 1;
                 SessionStart:= time;
-                 Pi:=0;
-
                 A:
-                 begin
-                    QueueStart = time;
-                    FIFO.give(1);
-                    Pi.update(1);
-                    if P LE Ptot then begin
-                        hold(Send.sample);
-                         Goto A;
-                    end;
-                    if P eqv Ptot then begin
-                       sessionLenth = time - SessionTime
-                end;
+                        if Pi < Ptot then begin
+                                new Packet(edit("packet",Pi)).schedule(now);
+                                hold(Send.sample); 
+                                Goto A;
+                        end;
+                        
+                buffer.take(1000);
+                SessionLength.update(time-SessionStart);
+                 end;
+
+
+         Entity class Packet();
+            begin
+                ref(BIN) buffer;
+                timestamp:= time;
+                queue.wait
+                
+                delay.update(time-timestamp)
+                buffer.give(1);
             end;
 
 
-
-        Entity class Server();
+        Entity class Network(queue);
         Po:=0
         begin
           B:
@@ -49,7 +54,7 @@
         Serve:- new NegExp("Serving intensity", 1);
 
 
-        totalDelay:- new Tally("Totalt time in queue");
+        delay:- new Tally("Totalt time in queue");
 
 
 
