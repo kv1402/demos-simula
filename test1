@@ -1,4 +1,4 @@
-        ref(RDist) ;
+
         ref(BIN) FIFO;
         ref(Count) Pi, Po;
         int Ptot;
