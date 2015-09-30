@@ -41,7 +41,8 @@ begin
         Entity class Network(queue,serve, Ptot);
         begin
                 ref(Packet) packet;
-                integer Po:= 1;
+                integer Po;
+                Po:= 1;
                 while Po < Ptot do 
                 packet:= queue.coopt;
                 hold(serve.sample);
