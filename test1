@@ -47,6 +47,7 @@
 
 
         delay:- new Tally("Totalt time in queue");
+        sessionLength:- new Tally("Total session length");
 
 
 
@@ -91,11 +92,11 @@
         if numreplica < 3 then norepli;
 
 
-        DelayPP:= totalDelay/Ptot/3;
-        
+        avgPPdelay:= totalDelay/Ptot/3;
+        avgSession:= sessionLenght/3;
 
-        OutText("Average sessionLenth");outReal(SessLength,10);OutImage;
-        OutText("Average delay per packet");outReal(DelayPP, 4, 10);OutImage;
+        OutText("Average sessionLenth");outReal(avgSession,10);OutImage;
+        OutText("Average delay per packet");outReal(avgPPdelay, 4, 10);OutImage;
     end;
 end;
 
