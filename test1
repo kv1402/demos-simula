@@ -1,0 +1,104 @@
+        ref(RDist) ;
+        ref(BIN) FIFO;
+        ref(Count) Pi, Po;
+        int Ptot;
+        ref(Tally) Send, totalDelay;
+        Real SessionStart, QueueStart;
+
+        ref(Component) ;
+        
+        Entity class User(Send);
+            begin
+                SessionStart:= time;
+                 Pi:=0;
+
+                A:
+                 begin
+                    QueueStart = time;
+                    FIFO.give(1);
+                    Pi.update(1);
+                    if P LE Ptot then begin
+                        hold(Send.sample);
+                         Goto A;
+                    end;
+                    if P eqv Ptot then begin
+                       sessionLenth = time - SessionTime
+                end;
+            end;
+
+
+
+        Entity class Server();
+        Po:=0
+        begin
+          B:
+          QueueEnd = time;
+          FIFO.take(1);
+          Po.update(1);
+          totalDelay.update(QueueEnd-QueueStart);
+          hold(Serve.sample);
+          if 3*Ptot eqv P then begin
+              avslutt
+          end;
+          Goto B
+        end;
+        
+        setseed(33427485);
+
+        Send:-new NegExp("Sending intensity", 0.1);
+        Serve:- new NegExp("Serving intensity", 1);
+
+
+        totalDelay:- new Tally("Totalt time in queue");
+
+
+
+
+        numreplica:=20;
+
+        WHILE replication LE numreplica DO
+        begin
+
+
+            totalDelay.reset;
+
+
+            User1:- new User("User1", Send);
+            User2:- new User("User2", Send);
+            User3:- new User("User3", Send);    
+            
+            Pi:- new Count("Count Input");
+            Po:- new Count("Count Output");
+
+
+            User1.schedule(0);
+            User2.schedule(0);
+            User3.schedule(0);
+            
+    
+
+            New Server("Server").schedule(0);
+
+            Hold(60*60*24);
+
+            totalUp:=totalUp+upTime.sum;
+            totalDown:=totalDown+downTime.sum;
+
+            Tilgjengelig.update(upTime.sum/(upTime.sum+downTime.sum));
+
+            if numreplica > 2 then noreport;
+
+            replicate;
+        end;
+
+        if numreplica < 3 then norepli;
+
+
+        DelayPP:= totalDelay/Ptot/3;
+        
+
+        OutText("Average sessionLenth");outReal(SessLength,10);OutImage;
+        OutText("Average delay per packet");outReal(DelayPP, 4, 10);OutImage;
+    end;
+end;
+
