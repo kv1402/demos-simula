@@ -32,7 +32,6 @@ begin
 
          Entity class Packet(buffer);
               begin
-              	ref(buffer)buffer;
               	Real timestamp;
                 timestamp:= time;
                 queue.wait;
