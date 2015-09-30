@@ -53,10 +53,10 @@ begin
         
         setseed(33427485);
 
-        Send:-new NegExp("Sending intensity", 0.1);
-        Serve:- new NegExp("Serving intensity", 1);
         Delay:= new Tally("Total time in queue");
         sessionLength:- new Tally("Total session length");
+        Send:-new NegExp("Sending intensity", 0.1);
+        Serve:- new NegExp("Serving intensity", 1);
         queue := new waitQ("Queue");
 
 
