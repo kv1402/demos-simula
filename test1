@@ -63,10 +63,10 @@
         begin
 
 
-            totalDelay.reset;
+            delay.reset;
 
 
-            User1:- new User("User1", Send);
+            User1:- new User("User1", Ptot, Send, buffer);
             User2:- new User("User2", Send);
             User3:- new User("User3", Send);    
             
