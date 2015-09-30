@@ -7,7 +7,7 @@ begin
         ref(Tally) delay_, sessionLength;
         ref(RDist) Send, serve;
         ref(User) User1, User2, User3;
-        ref(Network) network;
+        ref(Network) network_;
         integer Ptot;
         real numreplica;
         
@@ -33,7 +33,8 @@ begin
 
 
          Entity class Packet(buffer);
-              begin
+                ref(Bin) buffer;             
+          begin
               	Real timestamp;
                 timestamp:= time;
                 queue.wait;
@@ -44,25 +45,25 @@ begin
 
         Entity class Network;
         begin
-                ref(Packet) packet;
+                ref(Packet) packet_;
                 integer Po;
                 Po:= 1;
                 while Po < Ptot do 
-                packet:= queue.coopt;
+                packet_:- queue.coopt;
                 hold(serve.sample);
-                packet.schedule(0);
+                packet_.schedule(0);
                 
         end;
         
-        Ptot =1000;
+        Ptot :=1000;
         
         setseed(33427485);
 
-        delay_:= new Tally("Total time in queue");
-        sessionLength:- new Tally("Total session length");
-        Send:-new NegExp("Sending intensity", 0.1);
+        delay_:- new Tally("TimeinQ");
+        sessionLength:- new Tally("SessionLength");
+        Send:-new NegExp("Sending intensity", 1);
         Serve:- new NegExp("Serving intensity", 1);
-        queue := new waitQ("Queue");
+        queue :- new waitQ("Queue");
 
 
 
