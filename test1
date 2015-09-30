@@ -2,7 +2,7 @@
         ! ref(BIN) FIFO;
         ref(WaitQ) queue;
         ref(Tally) delay,sessionLength;
-        ref(Rdist) Send;
+        ref(Rdist) Send, serve;
         int Ptot;
         
         Entity class User(Ptot, Send, buffer);
@@ -33,19 +33,11 @@
             end;
 
 
-        Entity class Network(queue);
-        Po:=0
+        Entity class Network(queue,serve);
         begin
-          B:
-          QueueEnd = time;
-          FIFO.take(1);
-          Po.update(1);
-          totalDelay.update(QueueEnd-QueueStart);
-          hold(Serve.sample);
-          if 3*Ptot eqv P then begin
-              avslutt
-          end;
-          Goto B
+                ref(Packet) packet;
+                packet:= queue.coopt;
+                hold(serve.sample);
         end;
         
         setseed(33427485);
