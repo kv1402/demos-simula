@@ -1,5 +1,8 @@
-
-
+begin
+	external class demos="/usr/local/share/cim/demos.atr";
+	demos
+	begin
+        
         ref(WAITQ) queue;
         ref(Tally) delay,sessionLength;
         ref(RDist) Send, serve;
