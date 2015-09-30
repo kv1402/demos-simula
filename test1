@@ -33,12 +33,17 @@
             end;
 
 
-        Entity class Network(queue,serve);
+        Entity class Network(queue,serve, Ptot);
         begin
+                int Po:= 1;
                 ref(Packet) packet;
+                while Po < Ptot do 
                 packet:= queue.coopt;
                 hold(serve.sample);
+                
         end;
+        
+        Ptot =1000;
         
         setseed(33427485);
 
