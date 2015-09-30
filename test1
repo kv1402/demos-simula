@@ -24,7 +24,7 @@ begin
                         end;
                         
                 buffer.take(1000);
-                SessionLength.update(time-SessionStart);
+                sessionLength.update(time-SessionStart);
                  end;
 
 
