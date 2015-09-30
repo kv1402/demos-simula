@@ -55,7 +55,7 @@ begin
 
         Send:-new NegExp("Sending intensity", 0.1);
         Serve:- new NegExp("Serving intensity", 1);
-        delay:- new Tally("Total time in queue");
+        delay:= new Tally("Total time in queue");
         sessionLength:- new Tally("Total session length");
         queue := new waitQ("Queue");
 
