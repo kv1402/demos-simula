@@ -1,0 +1,88 @@
+begin
+	external class demos="/usr/local/share/cim/demos.atr";
+	demos
+	begin
+        
+        ref(WAITQ) queue;
+        ref(Tally) delay_, sessionLength;
+        ref(RDist) Send, serve;
+        ref(User) User1, User2, User3;
+        ref(Network) network_;
+        ref(BIN) SessTerm;
+        integer Ptot;
+        real numreplica;
+        
+        Entity class User;
+            begin
+                ref(Bin) buffer;
+                integer Pi;
+                real SessionStart;
+                buffer :- new Bin("buffer", 0);
+                Pi := 0;
+                
+                SessionStart:= time;
+                A:
+                        if Pi < Ptot then begin
+                        	Pi:=Pi+1;
+                                new Packet(edit("packet",Pi), buffer).schedule(now);
+                                hold(Send.sample); 
+                                Goto A;
+                        end;
+                        
+                buffer.take(1000);
+                sessionLength.update(time-SessionStart);
+                SessTerm.give(1);
+                 end;
+
+
+         Entity class Packet(buffer);
+                ref(Bin) buffer;             
+          begin
+              	Real timestamp;
+                timestamp:= time;
+                queue.wait;
+                delay_.update(time-timestamp);
+                buffer.give(1);
+            end;
+
+
+        Entity class Network;
+        begin
+                ref(Packet) packet_;
+                integer Po;
+                Po:= 0;
+                while Po < 3*Ptot do begin
+		  Po:=Po+1;
+		  packet_:- queue.coopt;
+		  hold(serve.sample);
+		  packet_.schedule(0);
+                end;
+                
+        end;
+        
+        Ptot :=1000;
+        trace;
+
+        delay_:- new Tally("TimeinQ");
+        sessionLength:- new Tally("SessionLength");
+        Send:-new NegExp("Sending intensity", 50);
+        Serve:- new NegExp("Serving intensity", 60);
+        queue :- new waitQ("Queue");
+        SessTerm :- new Bin("Termin", 0);
+
+
+
+            User1:- new User("User1");
+            User2:- new User("User2");
+            User3:- new User("User3");    
+
+	    New network("Network").schedule(0);
+
+            User1.schedule(0);
+            User2.schedule(0);
+            User3.schedule(0);
+
+	    SessTerm.take(3);
+
+    end;
+end;
