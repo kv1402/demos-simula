@@ -9,7 +9,8 @@ begin
         ref(User) User1, User2, User3;
         ref(Network) network_;
         ref(BIN) SessTerm;
-        integer Ptot;
+        ref(RES) window;
+        integer Ptot, ;
         real numreplica;
         
         Entity class User;
@@ -60,6 +61,9 @@ begin
                 
         end;
         
+        Entity class window;
+        
+        
         Ptot :=1000;
         trace;
 
@@ -77,6 +81,8 @@ begin
             User3:- new User("User3");    
 
 	    New network("Network").schedule(0);
+	    window :- new RES("buffer",3000);
+	    resource.take(2997)
 
             User1.schedule(0);
             User2.schedule(0);
