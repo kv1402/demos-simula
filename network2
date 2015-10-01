@@ -4,7 +4,7 @@ begin
 	begin
         
         ref(WAITQ) queue;
-        ref(Tally) delay_, sessionLength;
+        ref(Tally) delay_, sessionLength, w_;
         ref(RDist) Send, serve;
         ref(Network) network_;
         ref(WindowControl) window_;
@@ -70,6 +70,7 @@ begin
         	w := 3;
         	window.acquire(2997);
         	loop:
+		    w_.update(w);
 		    hold(1000);
 		    if interrupted > 0 then begin
         		if lastDelay <= dmax then begin
@@ -96,11 +97,12 @@ begin
 
         delay_:- new Tally("TimeinQ");
         sessionLength:- new Tally("SessionLength");
+        w_:- new Tally("w");
         Send:-new NegExp("Sending intensity", 50);
         Serve:- new NegExp("Serving intensity", 60);
         queue :- new waitQ("Queue");
         SessTerm :- new Bin("Termin", 0);
-	window :- new RES("buffer",3000);  
+	window :- new RES("window",3000);
 
 	New network("Network").schedule(0);
 	window_ :- New WindowControl("Window");
