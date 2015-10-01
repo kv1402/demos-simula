@@ -76,12 +76,12 @@ begin
         		window.release(1);
         		w=w+1;
         		end;
-			else then begin
+			else if then begin
         	   	window.take((w+1)/2);
         	   	w=w-(w+1)/2;
         	   	end;
-        	   	repeat;
-        	   end;
+        	repeat;
+       
           end;
         		
         
