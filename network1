@@ -51,22 +51,22 @@ begin
                 ref(Packet) packet_;
                 integer Po;
                 Po:= 0;
-                while Po < Ptot do 
-                Po:=Po+1;
-                packet_:- queue.coopt;
-                hold(serve.sample);
-                packet_.schedule(0);
+                while Po < 3*Ptot do begin
+		  Po:=Po+1;
+		  packet_:- queue.coopt;
+		  hold(serve.sample);
+		  packet_.schedule(0);
+                end;
                 
         end;
         
         Ptot :=1000;
-        
-        setseed(33427485);
+        trace;
 
         delay_:- new Tally("TimeinQ");
         sessionLength:- new Tally("SessionLength");
         Send:-new NegExp("Sending intensity", 50);
-        Serve:- new NegExp("Serving intensity", 260);
+        Serve:- new NegExp("Serving intensity", 60);
         queue :- new waitQ("Queue");
         SessTerm :- new Bin("Termin", 0);
 
@@ -86,4 +86,5 @@ begin
 
     end;
 end;
+
 
