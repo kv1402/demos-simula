@@ -8,9 +8,10 @@ begin
         ref(RDist) Send, serve;
         ref(User) User1, User2, User3;
         ref(Network) network_;
+        ref(window) window_;
         ref(BIN) SessTerm;
         ref(RES) window;
-        integer Ptot, lastDelay;
+        integer Ptot, lastDelay, dmax;
         real numreplica;
         
         Entity class User;
@@ -24,6 +25,7 @@ begin
                 SessionStart:= time;
                 A:
                         if Pi < Ptot then begin
+                        	window.take(1);
                         	Pi:=Pi+1;
                                 new Packet(edit("packet",Pi), buffer).schedule(now);
                                 hold(Send.sample); 
@@ -62,9 +64,16 @@ begin
         end;
         
         Entity class window;
+        begin
+        	resource.take(2997)
+        	A: if lastDelay <= dmax then do
+        		window.release(1);
+        		
         
         
         Ptot :=1000;
+        dmax:=0.1;
+        lastDelay:=0;
         trace;
 
         delay_:- new Tally("TimeinQ");
@@ -81,8 +90,9 @@ begin
             User3:- new User("User3");    
 
 	    New network("Network").schedule(0);
+	    New window("Window").schedule(0);
 	    window :- new RES("buffer",3000);
-	    resource.take(2997)
+	    
 
             User1.schedule(0);
             User2.schedule(0);
