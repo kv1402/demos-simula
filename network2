@@ -44,6 +44,8 @@ begin
                 timestamp:= time;
                 queue.wait;
                 delay_.update(time-timestamp);
+                lastDelay:=time-timestamp;
+                window_.interrupt(0);
                 window.release(1);
                 buffer.give(1);
             end;
@@ -71,11 +73,13 @@ begin
         		hold(1000)
         		if lastDelay =< dmax then begin
         		window.release(1);
-        		goto A;
+        		w=w+1;
         		end;
-        	   if lastDelay > dmax then begin
-        	   	window.take(1);
-        	   	goto A;
+			else then begin
+        	   	window.take((w+1)/2);
+        	   	w=w-(w+1)/2;
+        	   	end;
+        	   	Goto A;
         	   end;
           end;
         		
