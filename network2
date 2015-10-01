@@ -70,7 +70,7 @@ begin
         	integer w, x;
         	w:= 3;
         	resource.take(2997)
-        	loop:
+        	LOOP:
         		hold(1000)
         		if interrupted>0 then begin
         		if lastDelay =< dmax then begin
@@ -83,7 +83,7 @@ begin
         	   	w=w-(w+1)/2;
         	   	end;
         	   	end;
-        	repeat;
+        	   repeat;
        
           end;
         		
