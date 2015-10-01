@@ -67,7 +67,7 @@ begin
         Entity class window;
         begin
         	resource.take(2997)
-        	A: if lastDelay <= dmax then begin
+        	A: if lastDelay =< dmax then begin
         		window.release(1);
         		goto A;
         	   end;
@@ -75,9 +75,9 @@ begin
         	   	window.take(1);
         	   	goto A;
         	   end;
-        	   if network then do
+        	   if network then begin
         	   	goto A;
-        	   end;
+		   end;
           end;
         		
         
