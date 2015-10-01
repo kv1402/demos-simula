@@ -67,18 +67,21 @@ begin
         
         Entity class window;
         begin
-        	integer w;
+        	integer w, x;
         	w:= 3;
         	resource.take(2997)
         	loop:
         		hold(1000)
+        		if interrupted>0 then begin
         		if lastDelay =< dmax then begin
         		window.release(1);
         		w=w+1;
         		end;
 			else begin
-        	   	window.take((w+1)/2);
+			x := (w+1)/2;
+        	   	window.take(x);
         	   	w=w-(w+1)/2;
+        	   	end;
         	   	end;
         	repeat;
        
