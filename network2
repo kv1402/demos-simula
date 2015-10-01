@@ -25,7 +25,6 @@ begin
                 SessionStart:= time;
                 A:
                         if Pi < Ptot then begin
-                        	window.take(1);
                         	Pi:=Pi+1;
                                 new Packet(edit("packet",Pi), buffer).schedule(now);
                                 hold(Send.sample); 
@@ -42,9 +41,11 @@ begin
                 ref(Bin) buffer;             
           begin
               	Real timestamp;
+                window.take(1);
                 timestamp:= time;
                 queue.wait;
                 delay_.update(time-timestamp);
+                window.release(1);
                 buffer.give(1);
             end;
 
@@ -66,8 +67,17 @@ begin
         Entity class window;
         begin
         	resource.take(2997)
-        	A: if lastDelay <= dmax then do
+        	A: if lastDelay <= dmax then begin
         		window.release(1);
+        		goto A;
+        	   end;
+        	   if lastDelay > dmax then begin
+        	   	window.take(1);
+        	   	goto A;
+        	   end;
+        	   if network then do
+        	   	goto A;
+          end;
         		
         
         
