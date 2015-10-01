@@ -76,7 +76,7 @@ begin
         		window.release(1);
         		w=w+1;
         		end;
-			else if then begin
+			else begin
         	   	window.take((w+1)/2);
         	   	w=w-(w+1)/2;
         	   	end;
