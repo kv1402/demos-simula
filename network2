@@ -65,11 +65,14 @@ begin
         
         Entity class window;
         begin
+        	integer w:= 3;
         	resource.take(2997)
-        	A: if lastDelay =< dmax then begin
+        	A: 
+        		hold(1000)
+        		if lastDelay =< dmax then begin
         		window.release(1);
         		goto A;
-        	   end;
+        		end;
         	   if lastDelay > dmax then begin
         	   	window.take(1);
         	   	goto A;
