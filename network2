@@ -10,7 +10,7 @@ begin
         ref(Network) network_;
         ref(BIN) SessTerm;
         ref(RES) window;
-        integer Ptot, ;
+        integer Ptot, lastDelay;
         real numreplica;
         
         Entity class User;
