@@ -12,7 +12,6 @@ begin
         ref(BIN) SessTerm;
         ref(RES) window;
         integer Ptot, lastDelay, dmax;
-        real numreplica;
         
         Entity class User;
             begin
@@ -75,9 +74,6 @@ begin
         	   	window.take(1);
         	   	goto A;
         	   end;
-        	   if network then begin
-        	   	goto A;
-		   end;
           end;
         		
         
