@@ -6,9 +6,8 @@ begin
         ref(WAITQ) queue;
         ref(Tally) delay_, sessionLength;
         ref(RDist) Send, serve;
-        ref(User) User1, User2, User3;
         ref(Network) network_;
-        ref(window) window_;
+        ref(WindowControl) window_;
         ref(BIN) SessTerm;
         ref(RES) window;
         integer Ptot, lastDelay, dmax;
@@ -37,18 +36,18 @@ begin
 
 
          Entity class Packet(buffer);
-                ref(Bin) buffer;             
-          begin
+         ref(Bin) buffer;             
+         begin
               	Real timestamp;
-                window.take(1);
+                window.acquire(1);
                 timestamp:= time;
                 queue.wait;
                 delay_.update(time-timestamp);
                 lastDelay:=time-timestamp;
-                window_.interrupt(0);
+                window_.interrupt(1);
                 window.release(1);
                 buffer.give(1);
-            end;
+        end;
 
 
         Entity class Network;
@@ -65,25 +64,26 @@ begin
                 
         end;
         
-        Entity class window;
+        Entity class WindowControl;
         begin
         	integer w, x;
-        	w:= 3;
-        	resource.take(2997)
-        	LOOP:
-        		hold(1000)
-        		if interrupted>0 then begin
-        		if lastDelay =< dmax then begin
-        		window.release(1);
-        		w=w+1;
-        		end;
+        	w := 3;
+        	window.acquire(2997);
+        	loop:
+		    hold(1000);
+		    if interrupted > 0 then begin
+        		if lastDelay <= dmax then begin
+			    window.release(1);
+			    w := w + 1;
+        		end
 			else begin
-			x := (w+1)/2;
-        	   	window.take(x);
-        	   	w=w-(w+1)/2;
+			    x := (w+1)/2;
+			    window.acquire(x);
+			    w := w - (w + 1)/2;
         	   	end;
-        	   	end;
-        	   repeat;
+        	   	window_.interrupt(0);
+		    end;
+        	repeat;
        
           end;
         		
@@ -100,23 +100,17 @@ begin
         Serve:- new NegExp("Serving intensity", 60);
         queue :- new waitQ("Queue");
         SessTerm :- new Bin("Termin", 0);
+	window :- new RES("buffer",3000);  
 
+	New network("Network").schedule(0);
+	window_ :- New WindowControl("Window");
+	window_.schedule(0);
+	new User("User1").schedule(0);
+	new User("User2").schedule(0);
+	new User("User3").schedule(0);  
+	
 
-
-            User1:- new User("User1");
-            User2:- new User("User2");
-            User3:- new User("User3");    
-
-	    New network("Network").schedule(0);
-	    New window("Window").schedule(0);
-	    window :- new RES("buffer",3000);
-	    
-
-            User1.schedule(0);
-            User2.schedule(0);
-            User3.schedule(0);
-
-	    SessTerm.take(3);
+	SessTerm.take(3);
 
     end;
 end;
